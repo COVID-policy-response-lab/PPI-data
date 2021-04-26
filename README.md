@@ -22,9 +22,12 @@ Developed by SUNY Binghamton COVID-19 Policy Response Lab.
 * Olivia Catalano, olivia.catalano15@gmail.com
 * Frank Giannelli, Rutgers, The State University of New Jersey, giannefr@shp.rutgers.edu
 * Dina Rosenberg, Higher School of Economics, balalaeva@gmail.com
-* Naveed Tahir, Syracuse University, ntahir@syr.edu
 * Julie VanDusky-Allen, Boise State University, julievanduskyallen@boisestate.edu
 * Andrei Zhirnov, University of Exeter, A.Zhirnov@exeter.ac.uk
+
+### Former members
+* Naveed Tahir, Syracuse University, ntahir@syr.edu
+* Almira ...., 
 
 ## A Brief Description
 
