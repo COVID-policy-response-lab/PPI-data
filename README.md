@@ -4,6 +4,16 @@ This is an original dataset of stringency of public health policy measures that 
 
 Developed by SUNY Binghamton COVID-19 Policy Response Lab.
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r cars, echo=TRUE, }
+df <- data.frame(x=1:10, y=21:30)
+library(ggplot2)
+ggplot(df, aes(x=x,y=y) + geom_point()
+```
+
+
 ## Team:
 
 #### Binghamton University
