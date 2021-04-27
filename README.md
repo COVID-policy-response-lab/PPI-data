@@ -26,8 +26,8 @@ Developed by SUNY Binghamton COVID-19 Policy Response Lab.
 * Andrei Zhirnov, University of Exeter, A.Zhirnov@exeter.ac.uk
 
 ### Former members
+* Almira Sadykova, asadyko1@binghamton.edu
 * Naveed Tahir, Syracuse University, ntahir@syr.edu
-* Almira ...., 
 
 ## A Brief Description
 
