@@ -6,15 +6,13 @@ Developed by [SUNY Binghamton COVID-19 Policy Response Lab](https://www.binghamt
 ## Team:
 
 #### Binghamton University
-* Olga Shvetsova, shvetso@binghamton.edu
+* Olga Shvetsova [scientific director](https://www.binghamton.edu/political-science/covid-response/people/shvetsova-cv.html), shvetso@binghamton.edu
 * Abdul Basit Adeel, aadeel1@binghamton.edu
 * Mert Can Bayar, mbayar1@binghamton.edu
 * Onsel Gurel Bayrali, obayral1@binghamton.edu
 * Michael Catalano, mcatala4@binghamton.edu
 * Ezgi Muftuoglu, emuftuo1@binghamton.edu
-* Tara Riggs, triggs1@binghamton.edu
 * Didem Seyis, dseyis1@binghamton.edu 
-* Mehmet Halit Sezgin, halitsezgin@gmail.com
 * Tianyi Zhao, tzhao19@binghamton.edu
 
 #### Beyond Binghamton University
@@ -22,11 +20,19 @@ Developed by [SUNY Binghamton COVID-19 Policy Response Lab](https://www.binghamt
 * Frank Giannelli, Rutgers, The State University of New Jersey, giannefr@shp.rutgers.edu
 * Dina Rosenberg, Higher School of Economics, balalaeva@gmail.com
 * Julie VanDusky-Allen, Boise State University, julievanduskyallen@boisestate.edu
+* Ruohao Zhang, ruohao.zhang@law.northwestern.edu
 * Andrei Zhirnov, University of Exeter, A.Zhirnov@exeter.ac.uk
 
 ### Former members
-* Almira Sadykova, asadyko1@binghamton.edu
-* Naveed Tahir, Syracuse University, ntahir@syr.edu
+* Hyoungrohk Chu, Binghamton University
+* Garrett DuMond, Binghamton University
+* Georgian-Marius Ghincea, European University Institute
+* Jason Means, University of Vienna 
+* Hasan Ozutemiz, Binghamton University
+* Tara Riggs, Binghamton University
+* Almira Sadykova, Binghamton University
+* Mehmet Halit Sezgin, Binghamton University
+* Naveed Tahir, Syracuse University
 
 ## A Brief Description
 
