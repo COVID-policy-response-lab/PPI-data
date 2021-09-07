@@ -2,9 +2,7 @@
 
 This is an original dataset of stringency of public health policy measures that were adopted in response to COVID-19 worldwide by governments at national and sub-national levels. The data set covers governments' policy responses between January 24, 2020 and December 31, 2020. 
 
-Developed by [SUNY Binghamton COVID-19 Policy Response Lab][1].
-[1]: https://www.binghamton.edu/political-science/covid-response/index.html "SUNY Binghamton COVID-19 Policy Response Lab"
-
+Developed by [SUNY Binghamton COVID-19 Policy Response Lab](https://www.binghamton.edu/political-science/covid-response/index.html).
 ## Team:
 
 #### Binghamton University
