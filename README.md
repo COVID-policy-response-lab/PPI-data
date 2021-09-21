@@ -63,6 +63,6 @@ Based on the recoded public health policy responses to COVID-19, we produce thre
 * Total PPI for each subnational unit on each day
  
 The Total PPI is based on the national and subnational policies and uses the highest values in each category for that unit for that day. The indices are scaled to range between 0 and 1. The Average Total PPI for each country-day is computed by weighing the different units' Total PPI values by the units' population shares. Maps with these three indices can be viewed on [the policy dashboard of the lab
-](https://gis-core.maps.arcgis.com/apps/dashboards/3f6529f4f3eb41b190e653d88ce00043){:target="_blank"}.
+](https://gis-core.maps.arcgis.com/apps/dashboards/3f6529f4f3eb41b190e653d88ce00043).
 
 
