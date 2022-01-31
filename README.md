@@ -20,7 +20,7 @@ Developed by [SUNY Binghamton COVID-19 Policy Response Lab](https://www.binghamt
 * Abdul Basit Adeel, axa6372@psu.edu 
 * Olivia Catalano, olivia.catalano15@gmail.com
 * Frank Giannelli, Rutgers, The State University of New Jersey, giannefr@shp.rutgers.edu
-* Dina Rosenberg, Higher School of Economics, balalaeva@gmail.com
+* Dina Rosenberg, Higher School of Economics, drosenberg@hse.ru
 * Julie VanDusky-Allen, Boise State University, julievanduskyallen@boisestate.edu
 * Ruohao Zhang, ruohao.zhang@law.northwestern.edu
 * Andrei Zhirnov, University of Exeter, A.Zhirnov@exeter.ac.uk
