@@ -40,4 +40,4 @@ vignettes/*.pdf
 .Renviron
 
 # Word version of the codebook
-.docx
+*.docx
