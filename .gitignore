@@ -41,3 +41,7 @@ vignettes/*.pdf
 
 # Word version of the codebook
 *.docx
+
+# production directories
+ingredients
+misc/**
