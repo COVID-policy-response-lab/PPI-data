@@ -44,4 +44,4 @@ vignettes/*.pdf
 
 # production directories
 ingredients
-misc/**
+misc/*
