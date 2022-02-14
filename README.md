@@ -37,7 +37,7 @@ Developed by [SUNY Binghamton COVID-19 Policy Response Lab](https://www.binghamt
 
 ## A Brief Description
 
-To measure COVID-19 mitigation policy responses, data is gathered on policies that national and sub-national policymakers adopted within fifteen public health categories. National and subnational public health policies are regionally and nationally identified and coded in 74 countries (subnational aggregates are presently published of USA and Canada only), including countries in North America, Central America, South America, Europe, the Middle East, and Asia. The full list of countries in the data set is illustrated in the codebook.   
+To measure COVID-19 mitigation policy responses, data is gathered on policies that national and sub-national policymakers adopted within fifteen public health categories. National and subnational public health policies are regionally and nationally identified and coded in 74 countries, including countries in North America, Central America, South America, Europe, the Middle East, and Asia.
 
 The fifteen public health categories include:
 * introduction of the state of emergency
