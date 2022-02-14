@@ -7,6 +7,7 @@ setwd("C:/Users/az310/Dropbox/COVID and institutions/GitHub/PPI-data")
 
 indir <- "./ingredients"
 outdir <- "./prelim"
+outdir2 <- "C:/Users/az310/Dropbox/COVID and institutions/output datasets/output excel - shared"
 
 # PPI data - weights
 weights <- c(o="old weights", n="weights v2")
@@ -431,5 +432,6 @@ for (j in names(output)) {
     conditionalFormatting(wb, "Check Consistency",
                             cols = 6:ncol(new[[j]]), rows = 2:nrow(new[[j]]), type="colourScale", rule=c(0,1), style = c("#ffffcc","#800026"))
   }
-  saveWorkbook(wb, file.path(outdir, paste0("PPI Info (",countrycode(j, "iso3c", "country.name"),").xlsx")), overwrite=TRUE) 
+  saveWorkbook(wb, file.path(outdir, paste0("PPI Info (",countrycode(j, "iso3c", "country.name"),").xlsx")), overwrite=TRUE)
+  saveWorkbook(wb, file.path(outdir2, paste0("PPI Info (",countrycode(j, "iso3c", "country.name"),").xlsx")), overwrite=TRUE) 
 }
