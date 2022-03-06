@@ -433,5 +433,9 @@ for (j in names(output)) {
                             cols = 6:ncol(new[[j]]), rows = 2:nrow(new[[j]]), type="colourScale", rule=c(0,1), style = c("#ffffcc","#800026"))
   }
   saveWorkbook(wb, file.path(outdir, paste0("PPI Info (",countrycode(j, "iso3c", "country.name"),").xlsx")), overwrite=TRUE)
-  saveWorkbook(wb, file.path(outdir2, paste0("PPI Info (",countrycode(j, "iso3c", "country.name"),").xlsx")), overwrite=TRUE) 
 }
+
+lof <- list.files(outdir, ".xlsx$")
+file.copy(file.path(outdir, lof), outdir2, overwrite=TRUE)
+
+
