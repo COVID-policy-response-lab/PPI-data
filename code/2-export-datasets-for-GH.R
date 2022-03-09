@@ -8,6 +8,7 @@ setwd("C:/Users/az310/Dropbox/COVID and institutions/GitHub/PPI-data")
 
 indir <- normalizePath("ingredients")
 dfp_github <- normalizePath("data")
+start.date <- as.Date("2020-1-1")
 
 regm1 <- file.path(dfp_github, "PPI_regions_m1")
 regm2 <- file.path(dfp_github, "PPI_regions_m2")
@@ -21,59 +22,52 @@ geo.grid <- read.csv(file.path(indir, "population_template.csv"), encoding = "UT
 geo.grid.x <- unique(subset(geo.grid, include=="Y", select=c("ccode","rcode","iso_state","name")))
  
 meta <- readRDS(file.path(indir, "PPI_meta.rds"))
+meta <- subset(meta, group!="all")
 meta <- merge(meta, totals, by="group")
 meta <- within(meta, ups <- round(score.x/score.y,5))
 
 ppi.regions <- readRDS(file.path(indir, "ppi_regions.rds"))
-novar <- unique(subset(ppi.regions, popw <0, select="ccode", drop=TRUE))
+ppi.regions$counter <- as.numeric(ppi.regions$date-start.date)
 
-ppi.regions.x <- subset(ppi.regions, template=="o" & !ccode %in% novar & group!="all")
-meta.regions <- subset(meta, group!="all")
-
-start.date <- as.Date("2020-1-1")
-
-# by region
-ppi.current <- list()
-ppi.current[["nat"]] <- within(ppi.regions.x, {
-  counter <- as.numeric(date-start.date)
-  score <- score.n
-})[c("ccode","rcode","date","counter","group","score")]
-ppi.current[["nat"]]$subnational <- 0
-ppi.current[["sub"]] <- within(ppi.regions.x, {
-  counter <- as.numeric(date-start.date)
-  score <- score.s
-})[c("ccode","rcode","date","counter","group","score")]
-ppi.current[["sub"]]$subnational <- 1
-ppi.current <- do.call("rbind", ppi.current)
-
-ppi.lagged <- within(ppi.current, counter <- counter+1)[c("ccode","subnational","rcode","counter","group","score")]
-ppi.regions.x <- dplyr::inner_join(ppi.current, ppi.lagged,by=c("ccode","subnational","rcode","counter","group"), suffix=c("",".l1"))
-ppi.regions.x <- within(ppi.regions.x, {
-  total_change <- round((score-score.l1),3)
+# stack national and subnational policies
+ppi.regions.w <- subset(ppi.regions, template=="o" & group!="all", 
+                        select=c("ccode","rcode","date","counter","group","score.s","score.n"))
+ppi.regions.l <- tidyr::pivot_longer(ppi.regions.w, cols=all_of(c("score.s","score.n")))
+ppi.lagged <- within(ppi.regions.l, counter <- counter+1)
+ppi.regions.l <- dplyr::inner_join(ppi.regions.l, ppi.lagged,
+                                  by = c("ccode","rcode","counter","group","name"),
+                                  suffix=c("",".l1"))
+ppi.regions.l <- within(ppi.regions.l, {
+  total_change <- round((value-value.l1),3)
+  subnational <- as.numeric(name=="score.s")
 })
-ppi.regions.x <- subset(ppi.regions.x, total_change >0)
+ppi.regions.l <- subset(ppi.regions.l, total_change !=0, 
+                        select=c("ccode","subnational","rcode","group","date","total_change","value.l1"))
 
-core.meta.regions <- unique(meta.regions[c("ccode","rcode","subnational","group","date","branch")])
+# meta information
+core.meta.regions <- unique(meta[c("ccode","rcode","subnational","group","date","branch")])
 core.meta.regions <- core.meta.regions[with(core.meta.regions, order(ccode, rcode, subnational, group, date, branch)),]
-core.meta.regions$nr <-1:nrow(core.meta.regions)
-meta.regions <- merge(core.meta.regions,meta.regions)
+core.meta.regions$nr <- 1L:nrow(core.meta.regions)
+meta.regions <- dplyr::inner_join(core.meta.regions,meta)
 meta.regions <- meta.regions[with(meta.regions, order(nr, rid)),]
 meta.regions <- unique(meta.regions[c("nr","ccode","rcode","subnational","group","date","branch","who","institution","report_date","expiration_date","ups")])
 
+# policies applied to the whole country
 countrywide <- subset(meta.regions, rcode == "ZZ")
 countrywide$rcode <- NULL
+# associate each policy with a region
 regionspec <- rbind(subset(meta.regions, rcode != "ZZ"),
-                    dplyr::inner_join(countrywide, unique(ppi.regions.x[c("ccode","rcode")])))
+                    dplyr::inner_join(countrywide, unique(ppi.regions[c("ccode","rcode")])))
 
 ## combine into a meta file
-meta.regions <- dplyr::left_join(ppi.regions.x, regionspec, by=c("ccode","rcode","subnational","group","date"))
+meta.regions <- dplyr::left_join(ppi.regions.l, regionspec, by=c("ccode","rcode","subnational","group","date"))
+
 iso_state <- setNames(geo.grid.x$iso_state, geo.grid.x$rcode)
 state_province <- setNames(geo.grid.x$name, geo.grid.x$rcode)
-
 branch.codes <- c(unk="missing", eld="executive leadership",jud="judiciary", bur="bureaucracy", leg="legislative", oth="other")
 
 meta.regions <- within(meta.regions, {
-  report_change <- round(ups-score.l1,3) 
+  report_change <- round(ups-value.l1,3) 
   isocode <- ccode
   isoabbr <- countrycode(isocode, origin="iso3n", destination="iso2c")
   dimension <- group
