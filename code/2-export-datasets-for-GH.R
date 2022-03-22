@@ -45,12 +45,12 @@ ppi.regions.l <- subset(ppi.regions.l, total_change !=0,
                         select=c("ccode","subnational","rcode","group","date","total_change","value.l1"))
 
 # meta information
-core.meta.regions <- unique(meta[c("ccode","rcode","subnational","group","date","branch")])
+core.meta.regions <- unique(meta[c("ccode","rcode","subnational","group","date","branch","source_link")])
 core.meta.regions <- core.meta.regions[with(core.meta.regions, order(ccode, rcode, subnational, group, date, branch)),]
 core.meta.regions$nr <- 1L:nrow(core.meta.regions)
 meta.regions <- dplyr::inner_join(core.meta.regions,meta)
 meta.regions <- meta.regions[with(meta.regions, order(nr, rid)),]
-meta.regions <- unique(meta.regions[c("nr","ccode","rcode","subnational","group","date","branch","who","institution","report_date","expiration_date","ups")])
+meta.regions <- unique(meta.regions[c("nr","ccode","rcode","subnational","group","date","branch","who","institution","source_link","report_date","expiration_date","ups")])
 
 # policies applied to the whole country
 countrywide <- subset(meta.regions, rcode == "ZZ")
@@ -76,9 +76,9 @@ meta.regions <- within(meta.regions, {
   iso_state <- iso_state[rcode]
 })
 meta.colnames <- c("isocode","isoabbr","state_province","iso_state","date","dimension","subnational","total_change",
-                   "branch","who","institution","report_date","expiration_date","report_change")
+                   "branch","who","institution","report_date","expiration_date","report_change","source_link")
 
-write.table(meta.regions[meta.colnames], file.path(dfp_github,"changes_regions_m1.csv"), append = FALSE, sep = ",", dec = ".", row.names = FALSE, col.names = TRUE)
+write.table(meta.regions[meta.colnames], file.path(dfp_github,"changes_regions_m1.csv"), na="", append = FALSE, sep = ",", dec = ".", row.names = FALSE, col.names = TRUE)
 
 
 ####  prepare clean versions
