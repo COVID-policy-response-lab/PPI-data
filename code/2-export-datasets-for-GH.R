@@ -77,7 +77,7 @@ meta.regions <- within(meta.regions, {
 })
 meta.colnames <- c("isocode","isoabbr","state_province","iso_state","date","dimension","subnational","total_change",
                    "branch","who","institution","report_date","expiration_date","report_change","source_link")
-
+meta.regions <- meta.regions[with(meta.regions, order(isoabbr, iso_state, subnational, dimension, date)),]
 write.table(meta.regions[meta.colnames], file.path(dfp_github,"changes_regions_m1.csv"), na="", append = FALSE, sep = ",", dec = ".", row.names = FALSE, col.names = TRUE)
 
 
