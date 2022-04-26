@@ -1,5 +1,6 @@
 library(countrycode)
 library(openxlsx)
+library(foreign)
 
 rm(list=ls())
 
@@ -126,6 +127,17 @@ y.w <- within(y.w, {
 y.w <- y.w[order(y.w$date), c("cname","isocode","isoabbr","date", labels.o$field)]
 colnames(y.w) <- c("cname","isocode","isoabbr","date", paste0(labels.o$label,".ave"))  
 write.table(y.w, file.path(dfp_github,"PPI_country_m1.csv"), append = FALSE, sep = ",", dec = ".", row.names = FALSE, col.names = TRUE)
+attr(y.w, "datalabel") <- paste0("Protective Policy Index M1, Country-Day file, ", format(Sys.Date(), "%Y-%m-%d"))
+varl.corr <- c("cname"="Country name", "isocode"="ISO 3166 country code",
+            "isoabbr"="ISO 3166 (2c) country code",
+            "ppi.all.tot.ave"="Average total PPI",
+            "ppi.all.nat.ave"="Average national PPI",               
+            "ppi.all.reg.ave"="Average regional PPI")
+varl.st <- rep("",ncol(y.w))
+varl.st[match(names(varl.corr), colnames(y.w))] <- varl.corr
+
+attr(y.w, "var.labels") <- varl.st
+write.dta(y.w, file.path(dfp_github,"PPI_country_m1.dta"))
 
 ## v2
 y <- subset(ppi.country, template=="n", select=c("ccode", "date","field","reg","nat","tot")) 
@@ -139,6 +151,17 @@ y.w <- y.w[order(y.w$date), c("cname","isocode","isoabbr","date", labels.n$field
 colnames(y.w) <- c("cname","isocode","isoabbr","date", paste0(labels.n$label,".ave.2")) 
 write.table(y.w, file.path(dfp_github,"PPI_country_m2.csv"), append = FALSE, sep = ",", dec = ".", row.names = FALSE, col.names = TRUE)
 
+attr(y.w, "datalabel") <- paste0("Protective Policy Index M2, Country-Day file, ", format(Sys.Date(), "%Y-%m-%d"))
+varl.corr <- c("cname"="Country name", "isocode"="ISO 3166 country code",
+               "isoabbr"="ISO 3166 (2c) country code",
+               "ppi.all.tot.ave.2"="Average total PPI",
+               "ppi.all.nat.ave.2"="Average national PPI",               
+               "ppi.all.reg.ave.2"="Average regional PPI")
+varl.st <- rep("",ncol(y.w))
+varl.st[match(names(varl.corr), colnames(y.w))] <- varl.corr
+
+attr(y.w, "var.labels") <- varl.st
+write.dta(y.w, file.path(dfp_github,"PPI_country_m2.dta"))
 
 ## regions v1
 y <- subset(ppi.regions, template=="o", select=c("ccode", "rcode", "date","field","reg","nat","tot")) 
@@ -177,5 +200,4 @@ for (cn in names(y.w.li)) {
   temp <- y.w.li[[cn]][order(y.w.li[[cn]][["date"]], y.w.li[[cn]][["iso_state"]]),]
   write.table(temp, paste0(regm2,"/PPI_regions_",cn,"_m2.csv"), append = FALSE, sep = ",", dec = ".", row.names = FALSE, col.names = TRUE)
 }
-
 
