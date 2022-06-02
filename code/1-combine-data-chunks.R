@@ -26,7 +26,7 @@ max.end.date <- max(dtrange$end.date)
 dtrange$ccode <- countrycode(dtrange$ccodealp, "iso3c", "iso3n")
 
 # geographic grid
-geo.grid <- read.csv(file.path(indir,"population_template.csv"), encoding = "UTF-8")
+geo.grid <- read.csv(file.path(indir,"population_template.csv"), encoding = "UTF-8", na="")
 
 # something new
 new.collabs <- c(
@@ -71,26 +71,49 @@ weights.needed <- subset(maxval, score >0)[["ccode"]]
 pop.master <- subset(geo.grid, !is.na(population))
 
 (check <- setdiff(weights.needed, unique(pop.master$ccode)))
+if (length(check)>0) {
+  data.frame(iso3n=check, iso2c=countrycode(check, "iso3n","iso2c"))
+}
 
-# build a grid
-geo.grid.x <- subset(geo.grid, include=="Y" & ccode %in% bulk2$ccode)
-pop.tot <- aggregate(population ~ ccode, data=subset(geo.grid.x, !is.na(population)), FUN=sum)
-
-geo.grid.x <- merge(geo.grid.x, pop.tot, by="ccode", all.x=TRUE)
-geo.grid.x <- within(geo.grid.x, popw <- population.x/population.y )
-geo.grid.x <- within(geo.grid.x, {
-  end.date <- dtrange[match(ccode, dtrange$ccode),"end.date"]
-  end.date[is.na(end.date)] <- def.end.date
+# build a grid 
+geo.grid.x <- within(subset(geo.grid, include=="Y" & ccode %in% bulk2$ccode), {
+  end.date <- as.Date(as.character(end_date), format="%Y%m%d")
+  end.date[which(is.na(end.date))] <- dtrange[match(ccode[which(is.na(end.date))], dtrange$ccode),"end.date"]
+  end.date[which(is.na(end.date))] <- def.end.date
 })
+
 
 ## find the combined ppi components and total
-# geographic grid
-geo.grid.li <- subset(geo.grid.x, (ccode %in% weights.needed), select = c("ccode","rcode","popw","end.date"))
+# weights needed
+geo.grid.li <- subset(geo.grid.x, (ccode %in% weights.needed), select = c("ccode","rcode","population","end.date"))
 geo.grid.li <- lapply(split(geo.grid.li, geo.grid.li$ccode), function(x) {
-  within(x, geo.id <- as.numeric(factor(rcode)))
+  x <- within(x, geo.id <- as.numeric(factor(rcode)))
+  if (length(unique(x$end.date))==1) {
+    x$popw <- x$population/sum(x$population)
+    x$start.date <- start.date
+    x$population <- NULL
+    return(x) 
+  } else {
+    ends <- sort(unique(x$end.date))
+    w <- lapply(seq_along(ends), function(e) {
+      u <- subset(x, end.date >= ends[e])
+      if (e==1) u$start.date <- start.date
+      else u$start.date <- ends[e-1]+1
+      u$end.date <- ends[e]
+      u$popw <- u$population/sum(u$population)
+      u$population <- NULL      
+      return(u)
+    })
+    w <- do.call("rbind", w)
+    row.names(w) <- NULL
+    return(w)
+  } 
 })
 names(geo.grid.li) <- paste0("w.",names(geo.grid.li))
+
+##  no weights needed
 geo.grid.li[["nw"]] <- subset(geo.grid.x, !(ccode %in% weights.needed), select = c("ccode","rcode","end.date"))
+geo.grid.li[["nw"]][["start.date"]] <- start.date
 geo.grid.li[["nw"]][["popw"]] <- -99
 geo.grid.li[["nw"]][["geo.id"]] <- as.numeric(factor(geo.grid.li[["nw"]][["ccode"]]))
 
@@ -102,7 +125,7 @@ geo.xwalk <- lapply(gnam, function(j) {
     u <- unique(geo.grid.li[[j]][c("geo.id","ccode")])
     u <- within(u, rcode <- 'ZZ')
   } else {
-    u <- geo.grid.li[[j]][c("geo.id","ccode","rcode")]
+    u <- unique(geo.grid.li[[j]][c("geo.id","ccode","rcode")])
     v <- within(u, rcode <- 'ZZ')
     u <- rbind(u,v)
   }
@@ -113,14 +136,13 @@ geo.xwalk <- do.call("rbind", geo.xwalk)
 geo.xwalk2 <- lapply(gnam, function(j) {
   u <- geo.grid.li[[j]]
   within(u, {
-    gnam <- j
-    end.date <- NULL
+    gnam <- j 
     })
 })
 geo.xwalk2 <- do.call("rbind", geo.xwalk2)
 
 ppi.parts.grid <- lapply(gnam, function(j) {
-  y  <- unique(geo.grid.li[[j]][c("geo.id","end.date")])
+  y  <- aggregate(end.date ~ geo.id, data=geo.grid.li[[j]], FUN=max)
   y$gnam <- j
   y
   })
@@ -153,7 +175,7 @@ ppi.parts.grid$date <- ppi.parts.grid$end.date <- NULL
 
 # add information
 bulk3 <- merge(bulk2, time.grid, by="date")
-bulk3 <- merge(bulk3,geo.xwalk, by=c("ccode","rcode"))
+bulk3 <- merge(bulk3, geo.xwalk, by=c("ccode","rcode"))
 
 ppi.parts0 <- list()
 ppi.parts0[["score.s"]] <- subset(bulk3, subnational==1 & !is.na(score), select=c("gnam","geo.id","counter","template","group","score"))
@@ -193,7 +215,7 @@ for (j in paste0("score",c(".s",".n"))) {
       by=c("gnam", "geo.id", "template", "group","counter.e","counter.b")),
     counter.e-counter.b >1)
   
-  z$diff <- z$counter.e-z$counter.b - 1
+  z$diff <- z$counter.e - z$counter.b - 1
   q <- dplyr::summarize(.data=dplyr::group_by(.data=z, gnam, group, template), mdiff=max(diff))
   q <- apply(q, 1, function(u) {
     data.frame(add=seq_len(u["mdiff"]), as.list(u))
@@ -251,8 +273,8 @@ ppi.regions0 <- dplyr::mutate(
   score.n = score.n/score,  
   val = val/score)
 
-ppi.regions <- dplyr::inner_join(ppi.regions0, geo.xwalk2, by=c("gnam","geo.id"))
-ppi.regions <- ppi.regions[nam.regions]
+ppi.regions <- dplyr::inner_join(ppi.regions0, geo.xwalk2, by=c("gnam","geo.id"))  
+ppi.regions <- subset(ppi.regions,date >= start.date & date <= end.date, select=nam.regions)
 
 ### country average
 ppi.country <- list()
