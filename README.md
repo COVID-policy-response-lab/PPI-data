@@ -65,4 +65,8 @@ Based on the recoded public health policy responses to COVID-19, we produce thre
 The Total PPI is based on the national and subnational policies and uses the highest values in each category for that unit for that day. The indices are scaled to range between 0 and 1. The Average Total PPI for each country-day is computed by weighing the different units' Total PPI values by the units' population shares. Maps with these three indices can be viewed on [the policy dashboard of the lab
 ](https://elcamaleon.binghamton.edu/portal/apps/opsdashboard/index.html#/cc61a3652eb74b8ea8864928e8026aa1).
 
+# Citation
+The published data descriptor can be found [here](https://dx.doi.org/10.1038/s41597-022-01437-9). Please cite it as:
+
+Shvetsova, Olga, Andrei Zhirnov, Abdul Basit Adeel, Mert Can Bayar, Onsel Gurel Bayrali, Michael Catalano, Olivia Catalano, Hyoungrohk Chu, Frank Giannelli, Ezgi Muftuoglu, Dina Rosenberg, Didem Seyis, Bradley Skopyk, Julie VanDusky-Allen, and Tianyi Zhao. 2022. "Protective Policy Index (PPI) global dataset of origins and stringency of COVID-19 mitigation policies." *Nature Scientific Data* 9: 319. [doi:10.1038/s41597-022-01437-9](https://dx.doi.org/10.1038/s41597-022-01437-9). 
 
