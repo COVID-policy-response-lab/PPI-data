@@ -190,9 +190,9 @@ varl.corr <- c("isocode"="ISO 3166 country code",
                "isoabbr"="ISO 3166 (2c) country code",
                "state_province"="Region name",
                "iso_state"="ISO 3166 unit code",
-               "ppi.all.tot"="Average total PPI",
-               "ppi.all.nat"="Average national PPI",               
-               "ppi.all.reg"="Average regional PPI")
+               "ppi.all.tot"="Total PPI",
+               "ppi.all.nat"="National PPI",               
+               "ppi.all.reg"="Regional PPI")
 varl.st <- rep("",ncol(y.w))
 varl.st[match(names(varl.corr), colnames(y.w))] <- varl.corr
 
@@ -229,9 +229,9 @@ varl.corr <- c("isocode"="ISO 3166 country code",
                "isoabbr"="ISO 3166 (2c) country code",
                "state_province"="Region name",
                "iso_state"="ISO 3166 unit code",
-               "ppi.all.tot.2"="Average total PPI",
-               "ppi.all.nat.2"="Average national PPI",               
-               "ppi.all.reg.2"="Average regional PPI")
+               "ppi.all.tot.2"="Total PPI",
+               "ppi.all.nat.2"="National PPI",               
+               "ppi.all.reg.2"="Regional PPI")
 varl.st <- rep("",ncol(y.w))
 varl.st[match(names(varl.corr), colnames(y.w))] <- varl.corr
 
