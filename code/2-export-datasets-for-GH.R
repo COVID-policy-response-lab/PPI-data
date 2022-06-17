@@ -182,6 +182,26 @@ for (cn in names(y.w.li)) {
   write.table(temp, paste0(regm1,"/PPI_regions_",cn,"_m1.csv"), append = FALSE, sep = ",", dec = ".", row.names = FALSE, col.names = TRUE)
 }
 
+# export as an archive with a Stata file
+fn <- file.path(dfp_github,"PPI_regions_m1_dta.zip")
+temp_loc <- file.path(tempdir(),"PPI_regions_m1.dta")
+attr(y.w, "datalabel") <- paste0("Protective Policy Index M1, Region-Day file, ", format(Sys.Date(), "%Y-%m-%d"))
+varl.corr <- c("isocode"="ISO 3166 country code",
+               "isoabbr"="ISO 3166 (2c) country code",
+               "state_province"="Region name",
+               "iso_state"="ISO 3166 unit code",
+               "ppi.all.tot"="Average total PPI",
+               "ppi.all.nat"="Average national PPI",               
+               "ppi.all.reg"="Average regional PPI")
+varl.st <- rep("",ncol(y.w))
+varl.st[match(names(varl.corr), colnames(y.w))] <- varl.corr
+
+attr(y.w, "var.labels") <- varl.st
+write.dta(y.w, temp_loc)  
+
+if (file.exists(fn)) file.remove(fn)
+zip(fn, temp_loc, flags="-r9Xj")
+
 ## regions v2
 y <- subset(ppi.regions, template=="n", select=c("ccode", "rcode", "date","field","reg","nat","tot")) 
 y.w <- tidyr::pivot_wider(y, names_from=field, values_from=c(reg, nat, tot), names_sep=".")
@@ -200,4 +220,26 @@ for (cn in names(y.w.li)) {
   temp <- y.w.li[[cn]][order(y.w.li[[cn]][["date"]], y.w.li[[cn]][["iso_state"]]),]
   write.table(temp, paste0(regm2,"/PPI_regions_",cn,"_m2.csv"), append = FALSE, sep = ",", dec = ".", row.names = FALSE, col.names = TRUE)
 }
+
+# export as an archive with a Stata file
+fn <- file.path(dfp_github,"PPI_regions_m2_dta.zip")
+temp_loc <- file.path(tempdir(),"PPI_regions_m2.dta")
+attr(y.w, "datalabel") <- paste0("Protective Policy Index M2, Region-Day file, ", format(Sys.Date(), "%Y-%m-%d"))
+varl.corr <- c("isocode"="ISO 3166 country code",
+               "isoabbr"="ISO 3166 (2c) country code",
+               "state_province"="Region name",
+               "iso_state"="ISO 3166 unit code",
+               "ppi.all.tot.2"="Average total PPI",
+               "ppi.all.nat.2"="Average national PPI",               
+               "ppi.all.reg.2"="Average regional PPI")
+varl.st <- rep("",ncol(y.w))
+varl.st[match(names(varl.corr), colnames(y.w))] <- varl.corr
+
+attr(y.w, "var.labels") <- varl.st
+write.dta(y.w, temp_loc)  
+
+if (file.exists(fn)) file.remove(fn)
+zip(fn, temp_loc, flags="-r9Xj")
+
+
 
